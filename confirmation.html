@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>KFC Confirmation</title>
+	<style>
+		body {
+			background-color: #f2f2f2;
+			font-family: 'Arial', sans-serif;
+		}
+		h1 {
+			color: red;
+			font-size: 50px;
+			text-align: center;
+			margin-top: 50px;
+		}
+		p {
+			font-size: 20px;
+			text-align: center;
+			margin-top: 20px;
+		}
+		#total-price-container {
+			text-align: center;
+			margin-top: 20px;
+		}
+		#total-price {
+			font-size: 24px;
+			color: red;
+		}
+		a {
+			display: block;
+			margin: auto;
+			width: 200px;
+			height: 50px;
+			background-color: red;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 10px;
+			margin-top: 20px;
+			text-decoration: none;
+		}
+		a:hover {
+			background-color: white;
+			color: red;
+			border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<h1>Order Confirmation</h1>
+	<p>Thank you for placing your order with KFC!</p>
+	<div id="total-price-container">
+		<p id="total-price">Total Price: $0.00</p>
+	</div>
+	<a href="options.html">Back to Options</a>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const totalPriceElement = document.getElementById('total-price');
+
+			// Retrieve order data from local storage
+			const orderData = JSON.parse(localStorage.getItem('orderData')) || [];
+
+			// Calculate and display total price
+			const totalPrice = orderData.reduce((total, item) => total + item.quantity * item.price, 0);
+			totalPriceElement.innerHTML = 'Total Price: $' + totalPrice.toFixed(2);
+
+			// Clear the order data after displaying the confirmation (you may adjust this based on your needs)
+			localStorage.removeItem('orderData');
+		});
+	</script>
+</body>
+</html>

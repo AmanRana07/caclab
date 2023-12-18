@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>KFC Options</title>
+	<style>
+		body {
+			background-color: #f2f2f2;
+		}
+		h1 {
+			color: red;
+			font-size: 50px;
+			text-align: center;
+			margin-top: 50px;
+		}
+		ul {
+			list-style-type: none;
+			margin: auto;
+			padding: 0;
+			width: 50%;
+			text-align: center;
+			margin-top: 50px;
+		}
+		li {
+			font-size: 30px;
+			margin-top: 20px;
+			background-color: white;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 5px 5px 10px #888888;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		li.selected {
+			background-color: red;
+            color: #fff; 
+		}
+		a {
+			display: block;
+			margin: auto;
+			width: 200px;
+			height: 50px;
+			background-color: red;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 10px;
+			margin-top: 50px;
+			text-decoration: none;
+		}
+		a:hover {
+			background-color: white;
+			color: red;
+			border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<h1>Choose your favorite food</h1>
+	<ul id="food-list">
+		<li onclick="toggleItem('Chicken Wings', 10.00)">Chicken Wings</li>
+		<li onclick="toggleItem('Chicken Popcorn', 5.00)">Chicken Popcorn</li>
+		<li onclick="toggleItem('Chicken Strips', 8.00)">Chicken Strips</li>
+		<li onclick="toggleItem('Chicken Burger', 7.50)">Chicken Burger</li>
+		<li onclick="toggleItem('Chicken Bucket', 15.00)">Chicken Bucket</li>
+	</ul>
+	<a href="order_summary.html">View Order Summary</a>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// Call the function to update visuals on page load
+			updateSelectionVisuals();
+		});
+
+		function toggleItem(item, price) {
+			const orderData = JSON.parse(localStorage.getItem('orderData')) || [];
+			const existingItemIndex = orderData.findIndex(orderItem => orderItem.item === item);
+
+			if (existingItemIndex !== -1) {
+				// If the item is already in the order, remove it
+				orderData.splice(existingItemIndex, 1);
+			} else {
+				// If the item is not in the order, add it
+				orderData.push({ item, quantity: 1, price });
+			}
+
+			localStorage.setItem('orderData', JSON.stringify(orderData));
+			updateSelectionVisuals();
+		}
+
+		function updateSelectionVisuals() {
+			const orderData = JSON.parse(localStorage.getItem('orderData')) || [];
+			const foodListItems = document.querySelectorAll('#food-list li');
+
+			foodListItems.forEach(item => {
+				item.classList.remove('selected');
+			});
+
+			orderData.forEach(orderItem => {
+				const matchingListItem = Array.from(foodListItems).find(listItem => listItem.textContent.includes(orderItem.item));
+				if (matchingListItem) {
+					matchingListItem.classList.add('selected');
+				}
+			});
+		}
+	</script>
+</body>
+</html>

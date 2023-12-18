@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>KFC Order Summary</title>
+	<style>
+		body {
+			background-color: #f2f2f2;
+			font-family: 'Arial', sans-serif;
+		}
+		h1 {
+			color: red;
+			font-size: 50px;
+			text-align: center;
+			margin-top: 50px;
+		}
+		table {
+			margin: auto;
+			margin-top: 50px;
+			border-collapse: collapse;
+			width: 50%;
+			background-color: white;
+			box-shadow: 5px 5px 10px #888888;
+		}
+		th {
+			background-color: red;
+			color: white;
+			font-size: 30px;
+			padding: 10px;
+			text-align: center;
+			border-radius: 10px;
+		}
+		td {
+			font-size: 20px;
+			padding: 10px;
+			text-align: center;
+			border-bottom: 1px solid #ddd;
+		}
+		#total-price-container {
+			text-align: center;
+			margin-top: 20px;
+		}
+		#total-price {
+			font-size: 24px;
+			color: red;
+		}
+		a {
+			display: block;
+			margin: auto;
+			width: 200px;
+			height: 50px;
+			background-color: red;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 10px;
+			margin-top: 20px;
+			text-decoration: none;
+		}
+		a:hover {
+			background-color: white;
+			color: red;
+			border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<h1>Order Summary</h1>
+	<table id="order-table">
+		<tr>
+			<th>Item</th>
+			<th>Quantity</th>
+			<th>Price</th>
+		</tr>
+	</table>
+	<div id="total-price-container">
+		<p id="total-price">Total Price: $0.00</p>
+	</div>
+	<a href="confirmation.html" id="confirm-order">Confirm Order</a>
+	<a href="options.html">Back to Options</a>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const orderTable = document.getElementById('order-table');
+			const totalPriceElement = document.getElementById('total-price');
+			const confirmOrderLink = document.getElementById('confirm-order');
+
+			// Retrieve order data from local storage
+			const orderData = JSON.parse(localStorage.getItem('orderData')) || [];
+
+			// Populate the table with order data
+			orderData.forEach(item => {
+				const row = orderTable.insertRow(-1);
+				const cell1 = row.insertCell(0);
+				const cell2 = row.insertCell(1);
+				const cell3 = row.insertCell(2);
+
+				cell1.innerHTML = item.item;
+				cell2.innerHTML = item.quantity;
+				cell3.innerHTML = '$' + (item.quantity * item.price).toFixed(2);
+			});
+
+			// Calculate and display total price
+			const totalPrice = orderData.reduce((total, item) => total + item.quantity * item.price, 0);
+			totalPriceElement.innerHTML = 'Total Price: $' + totalPrice.toFixed(2);
+
+			// You can add more logic here, such as updating the confirmation link based on certain conditions
+				// Example: confirmOrderLink.href = 'confirmation.html?total=' + totalPrice;
+		});
+	</script>
+</body>
+</html>
